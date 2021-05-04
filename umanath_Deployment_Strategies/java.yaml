@@ -1,0 +1,16 @@
+---
+- name: Installing Java {{ java_version }} 
+  hosts: test
+  become: yes
+  vars:
+    java_version: '11'
+
+  tasks: 
+   - name: Update apt packages
+     apt:
+      update_cache: yes 
+
+   - name: Installing Java {{ java_version }}
+     apt:
+      name: openjdk-{{ java_version }}-jdk
+      state: present
