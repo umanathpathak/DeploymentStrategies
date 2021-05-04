@@ -1,17 +1,18 @@
 ---
 - name: "Installing Tomcat {{ tomcat_major_version }}"
-  hosts: test
+  hosts: web
   become: yes
   vars:
+    java_version: '8'
     tomcat_user: 'tomcat'
     tomcat_group: 'tomcat'
     tomcat_major_version: '9'
     tomcat_version: '9.0.45'
     tomcat_directory_path: '/opt/tomcat'
-    tomcat_service_file_path: '/home/umanath'
+    tomcat_service_file_path: '.'
     tomcat_password: 'password'
-    src_war_file_path: '/etc/ansible'
-    
+    src_war_file_path: '.'
+    ansible_python_interpreter: /usr/bin/python3    
   tasks:
    - name: add Tomcat Group
      group:
@@ -45,7 +46,7 @@
        state: directory
  
    - name: Copy Tomcat service file from local to remote
-     copy:
+     template:
        src: "{{ tomcat_service_file_path }}/tomcat.service"
        dest: /etc/systemd/system/
        mode: 0700

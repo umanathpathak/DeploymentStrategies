@@ -1,7 +1,10 @@
 ---
 - name: Installing Nginx web server 
-  hosts: test
+  hosts: loadbalancer
   become: yes
+   vars:
+    java_version: '8'
+    ansible_python_interpreter: /usr/bin/python3
   tasks: 
    - name: Installing Nginx...
      apt:
