@@ -1,11 +1,19 @@
 ---
 - name: Installing Nginx web server 
+<<<<<<< HEAD
   hosts: lb
   become: yes
   vars: 
     lb_conf_file_path: '/etc/ansible/myPlaybooks/templates'
     lb_conf_file_name: 'load-balancer.conf'
 
+=======
+  hosts: loadbalancer
+  become: yes
+   vars:
+    java_version: '8'
+    ansible_python_interpreter: /usr/bin/python3
+>>>>>>> d985d71fae84f1cc9bd84f413b6a1ad695c30635
   tasks: 
    - name: Installing Nginx...
      apt:

@@ -7,8 +7,9 @@ create-network:
 run-vm:
 	echo "Creating VM $(VM_NAME)"
 	@docker rm -f $(VM_NAME) || true > /dev/null
-	@docker run -itd -l vm --name $(VM_NAME) --rm --net opstree opstree/vm:1.0
-	@docker exec -it $(VM_NAME) bash -c "/etc/init.d/ssh start"
+	@docker run -itd -l vm --name $(VM_NAME) --privileged  --rm --net opstree opstree/vm:1.0 /usr/sbin/init
+	@docker exec -it $(VM_NAME) bash -c "/etc/init.d/ssh start" 
+
 
 terminate-vm:
 	echo "Terminating VM $(VM_NAME)"
