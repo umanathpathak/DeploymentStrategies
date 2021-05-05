@@ -17,6 +17,8 @@
      copy:
       src: "{{ lb_conf_file_path }}/{{ lb_conf_file_name }}"
       dest: "/etc/nginx/conf.d/{{ lb_conf_file_name }}"
+     notify:
+      - Restart and Enable Nginx 
 
    - name: Removing symlink of default configuration file
      file:
