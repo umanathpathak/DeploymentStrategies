@@ -1,0 +1,44 @@
+---
+- name: Play to Stop Loadbalancer.. 
+  hosts: loadbalancer
+  become: yes
+  tasks: 
+   - name: Stopping Nginx..for maintenance
+     service:
+      name: nginx
+      state: stopped
+   - name: Waiting to show recreate deployment
+     pause: 
+      prompt: Press any key to continue..
+      echo: no
+   
+- name: Play for deploying next version of Web Application
+  hosts: web
+  become: yes
+  vars:
+    tomcat_directory_path: '/opt/tomcat'
+    src_war_file: '.'
+    tomcat_version: '9.0.45'
+  tasks:
+   - name: Copying war file to remote server
+     copy:
+      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+     notify:
+      - Restart and Enable Tomcat
+
+  handlers:
+   - name: Restart and Enable Tomcat
+     service:
+      name: tomcat
+      state: restarted
+      enabled: true
+
+- name: Play for getting loadbalancer up...
+  hosts: loadbalancer
+  become: yes
+  tasks: 
+   - name:
+     service:
+      name: nginx
+      state: started
