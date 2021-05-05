@@ -59,24 +59,8 @@
    - name: Copying war file to remote server
      copy:
        src: "{{ src_war_file_path }}/Spring3HibernateApp.war"
-       dest: "{{ tomcat_directory_path }}/webapps/"
-      
-   - name: Adding Roles to Tomcat user
-     blockinfile:
-       path: "{{ tomcat_directory_path }}/conf/tomcat-users.xml"
-       insertbefore: "</tomcat-users>"
-       block: |
-         <role rolename="manager-gui"/>
-         <role rolename="manager-script"/>
-         <user username="{{ tomcat_user }}" password="{{ tomcat_password }}" roles="manager-gui,manager-script"/>
-
-   - name: Rewriting context.xml file Tomcat 
-     copy: 
-       src: /etc/ansible/myPlaybooks/templates/context.xml
-       dest: "{{ tomcat_directory_path }}/webapps/manager/META-INF/" 
-     notify:
-       - Restart and Enable Tomcat
-  
+       dest: "{{ tomcat_directory_path }}/webapps/ROOT.war"
+       
   handlers:
    - name: Restart and Enable Tomcat
      service:
