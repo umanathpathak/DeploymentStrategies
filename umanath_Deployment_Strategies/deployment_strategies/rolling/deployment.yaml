@@ -1,0 +1,18 @@
+- vm1
+  - tomcat down
+  - deploy war
+  - tomcat up
+- vm2
+  - tomcat down
+  - deploy war
+  - tomcat up
+- vm3
+  - tomcat down
+  - deploy war
+  - tomcat up
+
+- vm1-vm3
+  - tomcat down
+  - deploy war
+  - tomcat up
+
