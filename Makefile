@@ -33,8 +33,8 @@ create-recreate-deployment-setup:
 	make run-controlserver
 	make run-vm-with-port VM_NAME=load-balancer HOST_PORT=8080 TARGET_PORT=80
 	make run-vm-with-port VM_NAME=vm1 HOST_PORT=8081 TARGET_PORT=8080
-	make run-vm-with-port VM_NAME=vm2 VM_NAME=vm1 HOST_PORT=8082 TARGET_PORT=8080
-	make run-vm-with-port VM_NAME=vm3 VM_NAME=vm1 HOST_PORT=8083 TARGET_PORT=8080
+	make run-vm-with-port VM_NAME=vm2 HOST_PORT=8082 TARGET_PORT=8080
+	make run-vm-with-port VM_NAME=vm3 HOST_PORT=8083 TARGET_PORT=8080
 
 
 cleanup-recreate-deployment-setup:
