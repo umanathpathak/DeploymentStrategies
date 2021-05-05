@@ -1,9 +1,32 @@
 ---
 - name: Installing Nginx web server 
-  hosts: test
+  hosts: lb
   become: yes
+  vars: 
+    lb_conf_file_path: '/etc/ansible/myPlaybooks/templates'
+    lb_conf_file_name: 'load-balancer.conf'
+
   tasks: 
    - name: Installing Nginx...
      apt:
-       name: nginx
-       state: present
+      name: nginx
+      state: present
+
+   - name: Copying LB configuration file to remote LB server
+     copy:
+      src: "{{ lb_conf_file_path }}/{{ lb_conf_file_name }}"
+      dest: "/etc/nginx/conf.d/{{ lb_conf_file_name }}"
+
+   - name: Removing symlink of default configuration file
+     file:
+      path: /etc/nginx/sites-enabled/default
+      state: absent      
+     notify:
+      - Restart and Enable Nginx
+
+  handlers:
+   - name: Restart and Enable Nginx
+     service:
+      name: nginx
+      state: restarted
+      enabled: true
