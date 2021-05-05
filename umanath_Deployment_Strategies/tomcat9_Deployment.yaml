@@ -11,14 +11,8 @@
     tomcat_directory_path: '/opt/tomcat'
     tomcat_service_file_path: '.'
     tomcat_password: 'password'
-<<<<<<< HEAD
-    src_war_file_path: '/etc/ansible'
-    java_version: '11'
-    
-=======
     src_war_file_path: '.'
     ansible_python_interpreter: /usr/bin/python3    
->>>>>>> d985d71fae84f1cc9bd84f413b6a1ad695c30635
   tasks:
    - name: add Tomcat Group
      group:
