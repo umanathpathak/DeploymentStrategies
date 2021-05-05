@@ -16,54 +16,69 @@
   tasks:
    - name: add Tomcat Group
      group:
-       name: "{{ tomcat_group }}"
+      name: "{{ tomcat_group }}"
    
    - name: add Tomcat User
      user:
-       name: "{{ tomcat_user }}"
-       group: "{{ tomcat_group }}"
- 
-   - name: Creating /opt/tomcat directory
+      name: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+       
+   - name: check if tomcat directory exist or not
+     stat:
+      path: "{{ tomcat_directory_path }}"
+     register: stat_result
+       
+   - name: Creating directory
      file:
-       path: "{{ tomcat_directory_path }}"
-       state: directory
-       mode: 0700
-   
-   - name: "Download & Unarchive Tomcat{{ tomcat_major_version }}"
+      path: "{{ tomcat_directory_path }}"
+      state: directory
+      owner: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+      mode: 0700
+      recurse: yes
+     when: not stat_result.stat.exists
+     
+   - name: check if tomcat folder exist or not
+     stat:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}"
+     register: tomcat_stat_result
+
+   - name: "Download tomcat{{ tomcat_major_version }}"
      unarchive:
-       src: https://downloads.apache.org/tomcat/tomcat-{{ tomcat_major_version }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz
-       dest: "{{ tomcat_directory_path }}"
-       remote_src: yes
-       extra_opts: [--strip-components=1]
- 
+      src: https://downloads.apache.org/tomcat/tomcat-{{ tomcat_major_version }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz
+      dest: "{{ tomcat_directory_path }}"
+      remote_src: yes
+      owner: "{{ tomcat_user }}"
+     when: not tomcat_stat_result.stat.exists
+       
    - name: Change ownership
      file:
-       path: "{{ tomcat_directory_path }}"
-       owner: "{{ tomcat_user }}"
-       group: "{{ tomcat_group }}"
-       mode: 0700
-       recurse: yes
-       state: directory
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}"
+      owner: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+      mode: 0700
+      recurse: yes
+      state: directory
  
    - name: Copy Tomcat service file from local to remote
      template:
-       src: "{{ tomcat_service_file_path }}/tomcat.service"
-       dest: /etc/systemd/system/
-       mode: 0700
+      src: "{{ tomcat_service_file_path }}/tomcat.service"
+      dest: /etc/systemd/system/
+      mode: 0700
 
    - name: Starting Tomcat
      service:
-       name: tomcat
-       state: started
+      name: tomcat
+      state: started
 
    - name: Copying war file to remote server
      copy:
-       src: "{{ src_war_file_path }}/Spring3HibernateApp.war"
-       dest: "{{ tomcat_directory_path }}/webapps/ROOT.war"
+      src: "{{ src_war_file_path }}/Spring3HibernateApp.war"
+      dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/Spring3HibernateApp.war"
        
   handlers:
    - name: Restart and Enable Tomcat
      service:
-       name: tomcat
-       state: restarted
-       enabled: true
+      name: tomcat
+      state: restarted
+      enabled: true
