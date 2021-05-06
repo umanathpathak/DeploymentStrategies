@@ -32,7 +32,7 @@
            
    - name: Copying war file to remote server
      copy:
-      src: "{{ src_war_file }}/Spring3HibernateApp_RecreateDeployment.warr"
+      src: "{{ src_war_file }}/Spring3HibernateApp_RecreateDeployment.war"
       dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
      notify:
       - Restart and Enable Tomcat
