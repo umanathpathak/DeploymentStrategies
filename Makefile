@@ -44,3 +44,8 @@ cleanup-recreate-deployment-setup:
 	make terminate-vm VM_NAME=vm2
 	make terminate-vm VM_NAME=vm3
 
+start-demo:
+	make build
+	make create-network
+	make create-recreate-deployment-setup
+	docker exec -it controlserver bash
