@@ -20,12 +20,28 @@
     src_war_file: '.'
     tomcat_version: '9.0.45'
   tasks:
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+      state: absent
+
+   - name: Delete ROOT war
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+      state: absent
+
    - name: Copying war file to remote server
      copy:
       src: "{{ src_war_file }}/Spring3HibernateApp2.war"
       dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
      notify:
       - Restart and Enable Tomcat
+  handlers:
+   - name: Restart and Enable Tomcat
+     service:
+      name: tomcat
+      state: restarted
+      enabled: true
 
 
 ##Play for vm2 #####
@@ -51,12 +67,28 @@
     src_war_file: '.'
     tomcat_version: '9.0.45'
   tasks:
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+      state: absent
+
+   - name: Delete ROOT war
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+      state: absent
+
    - name: Copying war file to remote server
      copy:
       src: "{{ src_war_file }}/Spring3HibernateApp2.war"
       dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
      notify:
       - Restart and Enable Tomcat
+  handlers:
+   - name: Restart and Enable Tomcat
+     service:
+      name: tomcat
+      state: restarted
+      enabled: true
 
 
 ##Play for vm3 #####
@@ -82,6 +114,16 @@
     src_war_file: '.'
     tomcat_version: '9.0.45'
   tasks:
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+      state: absent
+
+   - name: Delete ROOT war
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+      state: absent
+
    - name: Copying war file to remote server
      copy:
       src: "{{ src_war_file }}/Spring3HibernateApp2.war"

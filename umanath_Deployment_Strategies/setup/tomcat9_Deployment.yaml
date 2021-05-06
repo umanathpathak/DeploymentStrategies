@@ -71,6 +71,16 @@
       name: tomcat
       state: started
 
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+      state: absent
+
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+      state: absent
+
    - name: Copying war file to remote server
      copy:
       src: "{{ src_war_file_path }}/Spring3HibernateApp.war"

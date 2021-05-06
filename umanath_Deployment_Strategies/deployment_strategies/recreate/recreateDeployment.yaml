@@ -20,6 +20,16 @@
     src_war_file: '.'
     tomcat_version: '9.0.45'
   tasks:
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+      state: absent
+
+   - name: Delete ROOT folder
+     file:
+      path: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+      state: absent
+           
    - name: Copying war file to remote server
      copy:
       src: "{{ src_war_file }}/Spring3HibernateApp2.war"
