@@ -1,0 +1,97 @@
+---
+- name: Play to Stop Tomcat for vm1... 
+  hosts: vm1
+  become: yes
+  tasks: 
+   - name: Stopping Tomcat... for maintenance....
+     service:
+      name: tomcat
+      state: stopped
+   - name: Waiting to show recreate deployment
+     pause: 
+      prompt: Press any key to continue..
+      echo: no
+
+- name: Play for deploying next version of Web Application
+  hosts: vm1
+  become: yes
+  vars:
+    tomcat_directory_path: '/opt/tomcat'
+    src_war_file: '.'
+    tomcat_version: '9.0.45'
+  tasks:
+   - name: Copying war file to remote server
+     copy:
+      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+     notify:
+      - Restart and Enable Tomcat
+
+
+##Play for vm2 #####
+
+- name: Play to Stop Tomcat for vm2... 
+  hosts: vm2
+  become: yes
+  tasks: 
+   - name: Stopping Tomcat... for maintenance....
+     service:
+      name: tomcat
+      state: stopped
+   - name: Waiting to show recreate deployment
+     pause: 
+      prompt: Press any key to continue..
+      echo: no
+
+- name: Play for deploying next version of Web Application
+  hosts: vm2
+  become: yes
+  vars:
+    tomcat_directory_path: '/opt/tomcat'
+    src_war_file: '.'
+    tomcat_version: '9.0.45'
+  tasks:
+   - name: Copying war file to remote server
+     copy:
+      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+     notify:
+      - Restart and Enable Tomcat
+
+
+##Play for vm3 #####
+
+- name: Play to Stop Tomcat for vm3... 
+  hosts: vm3
+  become: yes
+  tasks: 
+   - name: Stopping Tomcat... for maintenance....
+     service:
+      name: tomcat
+      state: stopped
+   - name: Waiting to show recreate deployment
+     pause: 
+      prompt: Press any key to continue..
+      echo: no
+
+- name: Play for deploying next version of Web Application
+  hosts: vm3
+  become: yes
+  vars:
+    tomcat_directory_path: '/opt/tomcat'
+    src_war_file: '.'
+    tomcat_version: '9.0.45'
+  tasks:
+   - name: Copying war file to remote server
+     copy:
+      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
+     notify:
+      - Restart and Enable Tomcat
+
+  handlers:
+   - name: Restart and Enable Tomcat
+     service:
+      name: tomcat
+      state: restarted
+      enabled: true
