@@ -79,7 +79,7 @@
 
    - name: Copying war file to remote server
      copy:
-      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      src: "{{ src_war_file }}/Spring3HibernateApp_RollingDeployment.war"
       dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
      notify:
       - Restart and Enable Tomcat
@@ -126,7 +126,7 @@
 
    - name: Copying war file to remote server
      copy:
-      src: "{{ src_war_file }}/Spring3HibernateApp2.war"
+      src: "{{ src_war_file }}/Spring3HibernateApp_RollingDeployment.war"
       dest: "{{ tomcat_directory_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT.war"
      notify:
       - Restart and Enable Tomcat
